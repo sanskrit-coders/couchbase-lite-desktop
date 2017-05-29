@@ -66,7 +66,7 @@ class CouchbaseLiteDb(val d: Database) {
       if (key.length <= 750) {
         return key
       } else {
-        return key.substring(0, 749) + key.substring(750).hashCode().toString
+        return key.substring(0, 749) + "__rest_hashed__" + key.substring(750).hashCode().toString
       }
     }
     val finalKey = finalizeKey(key)
