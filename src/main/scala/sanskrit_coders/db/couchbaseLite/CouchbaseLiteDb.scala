@@ -13,7 +13,8 @@ import scala.collection.JavaConversions._
 
 
 /**
-  * Created by vvasuki on 5/29/17.
+  * Use with the following:
+  *   implicit def databaseToCouchbaseLiteDb(s: Database) = new CouchbaseLiteDb(s)
   */
 class CouchbaseLiteDb(val d: Database) {
   val log = LoggerFactory.getLogger(getClass.getName)
@@ -60,6 +61,15 @@ class CouchbaseLiteDb(val d: Database) {
   def updateDocument(key: String, jsonMap: Map[String, Object], merge: Boolean = false) = {
 //    log debug (jsonMap.toString())
     //    sys.exit()
+//    avoid dumping excessively long keys - can cause trouble with URLs in browsers.
+    def finalizeKey(key: String): String = {
+      if (key.length <= 750) {
+        return key
+      } else {
+        return key.substring(0, 749) + hashCode(key.substring(750)).toString
+      }
+    }
+    val finalKey = finalizeKey(key)
     val document = d.getDocument(key)
     document.update(new Document.DocumentUpdater() {
       override def update(newRevision: UnsavedRevision): Boolean = {
