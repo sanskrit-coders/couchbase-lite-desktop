@@ -11,15 +11,16 @@ import scala.collection.mutable
 import scala.io.StdIn
 import scala.collection.JavaConversions._
 
+
 /**
-  * Created by vvasuki on 5/26/17.
+  * Created by vvasuki on 5/29/17.
   */
-object couchbaseLiteUtils {
+class CouchbaseLiteDb(val d: Database) {
   val log = LoggerFactory.getLogger(getClass.getName)
-  def replicate(database: Database, replicationUrl: String = "http://127.0.0.1:5984/",
+  def replicate(replicationUrl: String = "http://127.0.0.1:5984/",
                 replicationUser: String = "vvasuki", doPull: Boolean = false) = {
     import com.couchbase.lite.replicator.Replication
-    val url = new URL(replicationUrl + database.getName)
+    val url = new URL(replicationUrl + d.getName)
     log.info("replicating to " + url.toString())
     var replicationPw = ""
     if (replicationPw.isEmpty) {
@@ -28,7 +29,7 @@ object couchbaseLiteUtils {
     }
     val auth = new BasicAuthenticator(replicationUser, replicationPw)
 
-    val push = database.createPushReplication(url)
+    val push = d.createPushReplication(url)
     push.setAuthenticator(auth)
     push.setContinuous(true)
     push.addChangeListener(new Replication.ChangeListener() {
@@ -39,7 +40,7 @@ object couchbaseLiteUtils {
     push.start
 
     if (doPull) {
-      val pull = database.createPullReplication(url)
+      val pull = d.createPullReplication(url)
       //    pull.setContinuous(true)
       pull.setAuthenticator(auth)
       pull.addChangeListener(new Replication.ChangeListener() {
@@ -51,12 +52,15 @@ object couchbaseLiteUtils {
     }
   }
 
-  def purgeDatabase(database: Database) = {
-    val result = database.createAllDocumentsQuery().run
+  def purgeDatabase() = {
+    val result = d.createAllDocumentsQuery().run
     val docObjects = result.iterator().map(_.getDocument).map(_.purge())
   }
 
-  def updateDocument(document: Document, jsonMap: Map[String, Object], merge: Boolean = false) = {
+  def updateDocument(key: String, jsonMap: Map[String, Object], merge: Boolean = false) = {
+//    log debug (jsonMap.toString())
+    //    sys.exit()
+    val document = d.getDocument(key)
     document.update(new Document.DocumentUpdater() {
       override def update(newRevision: UnsavedRevision): Boolean = {
         val jsonMapJava = collectionUtils.toJava(jsonMap).asInstanceOf[java.util.Map[String, Object]]
@@ -87,4 +91,6 @@ object couchbaseLiteUtils {
     })
   }
 
+
 }
+

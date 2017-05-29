@@ -3,17 +3,17 @@
 
     <modelVersion>4.0.0</modelVersion>
     <packaging>jar</packaging>
-    <version>1.1</version>
+    <version>1.2</version>
     <description>
         A collection of scala classes for manipulating a sanskrit_coders.db.couchbaseLite database using non-mobile (desktop libraries).
         Contributions and suggestions are invited at https://github.com/sanskrit-coders/stardict-sanskrit . (Sister projects there may also be of interest.)
     </description>
     <name>Couchbase Lite Desktop utils</name>
     <issueManagement>
-        <url>https://github.com/sanskrit-coders/stardict-sanskrit/issues</url>
+        <url>https://github.com/sanskrit-coders/couchbase-lite-desktop/issues</url>
         <system>GitHub Issues</system>
     </issueManagement>
-    <url>https://github.com/sanskrit-coders/stardict-sanskrit</url>
+    <url>https://github.com/sanskrit-coders/couchbase-lite-desktop</url>
 
     <licenses>
         <license>
