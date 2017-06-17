@@ -18,9 +18,20 @@ import scala.collection.JavaConversions._
   */
 class CouchbaseLiteDb(val d: Database) {
   val log = LoggerFactory.getLogger(getClass.getName)
+
+  import com.couchbase.lite.replicator.Replication
+  class ChangeListener extends Replication.ChangeListener {
+    var changeIndex = 0
+    override def changed(event: Replication.ChangeEvent): Unit = {
+      if (changeIndex % 50 == 0) {
+        log.info(s"changeIndex $changeIndex " + event.toString)
+      }
+      changeIndex = changeIndex + 1
+    }
+  }
+
   def replicate(replicationUrl: String = "http://127.0.0.1:5984/",
                 replicationUser: String = "vvasuki", doPull: Boolean = false) = {
-    import com.couchbase.lite.replicator.Replication
     val url = new URL(replicationUrl + d.getName)
     log.info("replicating to " + url.toString())
     var replicationPw = ""
@@ -33,22 +44,14 @@ class CouchbaseLiteDb(val d: Database) {
     val push = d.createPushReplication(url)
     push.setAuthenticator(auth)
     push.setContinuous(true)
-    push.addChangeListener(new Replication.ChangeListener() {
-      override def changed(event: Replication.ChangeEvent): Unit = {
-        log.info(event.toString)
-      }
-    })
+    push.addChangeListener(new ChangeListener())
     push.start
 
     if (doPull) {
       val pull = d.createPullReplication(url)
       //    pull.setContinuous(true)
       pull.setAuthenticator(auth)
-      pull.addChangeListener(new Replication.ChangeListener() {
-        override def changed(event: Replication.ChangeEvent): Unit = {
-          log.info(event.toString)
-        }
-      })
+      pull.addChangeListener(new ChangeListener())
       pull.start
     }
   }
