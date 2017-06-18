@@ -90,17 +90,12 @@ class CouchbaseLiteDb(val d: Database) {
     })
   }
 
-  def listCaseClassObjects(query: Query) = {
+  def listCaseClassObjects(query: Query): Iterator[Any] = {
     val result = query.run
-    val docObjects = result.iterator().map(_.getDocument).map(doc => {
+    return result.iterator().map(_.getDocument).map(doc => {
       val jsonMap = collectionUtils.toScala(doc.getUserProperties).asInstanceOf[mutable.Map[String, _]]
       //      val jsonMap = doc.getUserProperties
       jsonHelper.fromJsonMap(jsonMap)
-    })
-    //    log info s"We have ${quotes.length} quotes."
-    docObjects.foreach(obj => {
-      log info obj.toString
-      log info jsonHelper.getJsonMap(obj).toString()
     })
   }
 
