@@ -90,10 +90,14 @@ class CouchbaseLiteDb(val d: Database) {
     })
   }
 
-  def listCaseClassObjects(query: Query): Iterator[Any] = {
+  def listCaseClassObjects(query: Query, explicitJsonClass: Class[_] = null): Iterator[Any] = {
     val result = query.run
     return result.iterator().map(_.getDocument).map(doc => {
-      val jsonMap = collectionUtils.toScala(doc.getUserProperties).asInstanceOf[mutable.Map[String, _]]
+      val jsonMap = collectionUtils.toScala(doc.getUserProperties).asInstanceOf[mutable.Map[String, Any]]
+      if (explicitJsonClass != null) {
+//        jsonMap.put(jsonHelper.JSON_CLASS_FIELD_NAME, explicitJsonClass)
+        jsonMap.put("jsonClass", explicitJsonClass.getSimpleName.replace("$", ""))
+      }
       //      val jsonMap = doc.getUserProperties
       jsonHelper.fromJsonMap(jsonMap)
     })
