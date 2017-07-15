@@ -7,9 +7,9 @@ import com.couchbase.lite.{Database, Document, Query, UnsavedRevision}
 import dbUtils.{collectionUtils, jsonHelper}
 import org.slf4j.LoggerFactory
 
+import scala.collection.JavaConversions._
 import scala.collection.mutable
 import scala.io.StdIn
-import scala.collection.JavaConversions._
 
 
 /**
@@ -90,7 +90,7 @@ class CouchbaseLiteDb(val d: Database) {
     })
   }
 
-  def listCaseClassObjects(query: Query, explicitJsonClass: Class[_] = null): Iterator[Any] = {
+  def listCaseClassObjects[T](query: Query, explicitJsonClass: Class[_] = null)(implicit mf: Manifest[T]): Iterator[T] = {
     val result = query.run
     return result.iterator().map(_.getDocument).map(doc => {
       val jsonMap = collectionUtils.toScala(doc.getUserProperties).asInstanceOf[mutable.Map[String, Any]]
@@ -99,7 +99,7 @@ class CouchbaseLiteDb(val d: Database) {
         jsonMap.put("jsonClass", explicitJsonClass.getSimpleName.replace("$", ""))
       }
       //      val jsonMap = doc.getUserProperties
-      jsonHelper.fromJsonMap(jsonMap)
+      jsonHelper.fromJsonMap[T](jsonMap)
     })
   }
 
