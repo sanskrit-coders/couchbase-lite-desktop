@@ -2,21 +2,17 @@ package sanskrit_coders.db.couchbaseLite
 
 import _root_.java.io.File
 
-import com.couchbase.lite.auth.BasicAuthenticator
 import dbSchema.common.ScriptRendering
 import dbSchema.dictionary.{DictEntry, DictLocation}
-import dbUtils.{collectionUtils, jsonHelper}
-import sanskrit_coders.db.couchbaseLite.CouchbaseLiteDb
+import dbUtils.jsonHelper
 import sanskritnlp.dictionary.BabylonDictionary
 import stardict_sanskrit.babylonProcessor
 
-import scala.collection.mutable
 import scala.collection.mutable.ListBuffer
-import scala.io.StdIn
 
 //import com.couchbase.lite.{Database, Manager, JavaContext, Document, UnsavedRevision, Query, ManagerOptions}
 import com.couchbase.lite.util.Log
-import com.couchbase.lite.{Database, Manager, JavaContext, Document, UnsavedRevision, Query, ManagerOptions}
+import com.couchbase.lite.{Database, JavaContext, Manager, Query}
 //import org.json4s.jackson.Serialization
 import org.slf4j.LoggerFactory
 

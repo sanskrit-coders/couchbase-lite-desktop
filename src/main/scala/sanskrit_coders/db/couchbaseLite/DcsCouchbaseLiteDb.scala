@@ -2,8 +2,14 @@ package sanskrit_coders.db.couchbaseLite
 
 import _root_.java.io.File
 
+import dbSchema.dcs.{DcsBook, DcsObject, DcsSentence}
+import dbUtils.jsonHelper
 //import com.couchbase.lite.{Database, Manager, JavaContext, Document, UnsavedRevision, Query, ManagerOptions}
 //import org.json4s.jackson.Serialization
+//import com.couchbase.lite.{Database, Manager, JavaContext, Document, UnsavedRevision, Query, ManagerOptions}
+import com.couchbase.lite.{Database, JavaContext, Manager}
+//import org.json4s.jackson.Serialization
+import org.slf4j.LoggerFactory
 
 // This version of the database uses Java (rather than Android) API.
 class DcsCouchbaseLiteDB() {
