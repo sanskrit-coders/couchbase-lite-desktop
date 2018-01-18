@@ -17,6 +17,7 @@ libraryDependencies ++= Seq(
   ,"com.github.sanskrit-coders" % "indic-transliteration_2.12" % "1.8"
   //    ,"com.github.sanskrit-coders" % "sanskrit-lttoolbox" % "0.1"
   ,"com.github.sanskrit-coders" % "db-interface_2.12" % "3.1"
+  ,"com.github.sanskrit-coders" % "dict-tools_2.12" % "0.1"
 )
 
 libraryDependencies += "org.scalactic" %% "scalactic" % "3.0.4"
