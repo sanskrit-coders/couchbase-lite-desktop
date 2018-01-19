@@ -70,10 +70,13 @@ class DcsCouchbaseLiteDB() {
     return true
   }
 
-  def getSentencesWithoutAnalysis(): Iterator[DcsSentence] = {
+  def getSentences: Iterator[DcsSentence] = {
     val query = sentencesDb.createAllDocumentsQuery()
-    return sentencesDb.listCaseClassObjects(query=query, explicitJsonClass=DcsSentence.getClass).map(_.asInstanceOf[DcsSentence])
-      .filter(_.dcsAnalysisDecomposition == None)
+    sentencesDb.listCaseClassObjects(query=query, explicitJsonClass=DcsSentence.getClass).map(_.asInstanceOf[DcsSentence])
+  }
+
+  def getSentencesWithoutAnalysis(): Iterator[DcsSentence] = {
+      getSentences.filter(_.dcsAnalysisDecomposition == None)
   }
 
   def getBook(title: String) : DcsBook = {
