@@ -12,8 +12,8 @@ resolvers += Resolver.sonatypeRepo("snapshots")
 libraryDependencies ++= Seq(
   "ch.qos.logback" % "logback-classic" % "0.9.29"
   ,"ch.qos.logback" % "logback-core" % "0.9.29"
-  ,"com.couchbase.lite" % "couchbase-lite-java" % "1.4.0"
-  ,"com.couchbase.lite" % "couchbase-lite-java" % "1.4.0"
+  ,"com.couchbase.lite" % "couchbase-lite-java" % "1.4.1"
+  ,"com.couchbase.lite" % "couchbase-lite-java-forestdb" % "1.4.1"
   ,"com.github.sanskrit-coders" % "indic-transliteration_2.12" % "1.8"
   //    ,"com.github.sanskrit-coders" % "sanskrit-lttoolbox" % "0.1"
   ,"com.github.sanskrit-coders" % "db-interface_2.12" % "3.1"
