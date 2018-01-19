@@ -33,9 +33,10 @@ class DcsCouchbaseLiteDB() {
     sentencesDb = dbManager.getDatabase("dcs_sentences")
   }
 
-  def replicateAll(doPull: Boolean = false) = {
-    booksDb.replicate(doPull = doPull)
-    sentencesDb.replicate(doPull = doPull)
+  def replicateAll(replicationUrl: String = "http://127.0.0.1:5984/",
+                   replicationUser: String = "vvasuki", doPull: Boolean = false) = {
+    booksDb.replicate(replicationUrl = replicationUrl, replicationUser = replicationUser, doPull = doPull)
+    sentencesDb.replicate(replicationUrl = replicationUrl, replicationUser = replicationUser, doPull = doPull)
   }
 
 
